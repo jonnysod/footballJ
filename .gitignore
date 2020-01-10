@@ -1,0 +1,15 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Ignore IntelliJ settings
+.idea/
+*.iml
+
+# Ignore mac folder attributes in DS_Store
+.DS_Store
+
+#Ignore editing .hgignore with vim(mac os)
+.hgignore.swp
