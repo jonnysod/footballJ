@@ -11,5 +11,8 @@ build
 # Ignore mac folder attributes in DS_Store
 .DS_Store
 
-#Ignore editing .hgignore with vim(mac os)
+# Ignore editing .hgignore with vim(mac os)
 .hgignore.swp
+
+# Ignore property DB
+.jqwik-database
