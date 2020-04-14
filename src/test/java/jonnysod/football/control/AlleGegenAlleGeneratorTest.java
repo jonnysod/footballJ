@@ -7,10 +7,8 @@ import jonnysod.football.model.Spieler;
 import jonnysod.football.model.Spieltag;
 import jonnysod.football.model.Team;
 import net.jqwik.api.constraints.Size;
-import org.junit.Test;
 import net.jqwik.api.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.size;
@@ -20,10 +18,6 @@ public class AlleGegenAlleGeneratorTest {
 
     @Property
     public void testGenerateSpieltag(@ForAll @Size(min = 2, max = 10)List<@From("genTeam") Team> teamList) {
-//        System.out.println("test");
-//        System.out.println("teamList = "+teamList);
-//        System.out.println("teamList size = " + teamList);
-//        System.out.println("teamList type = " + teamList.getClass().getCanonicalName());
         SpieltagGenerator generator = new AlleGegenAlleGenerator();
         TurnierOptionen optionen = new TurnierOptionen(60);
         Spieltag spieltag = generator.generateSpieltag(teamList, optionen);
@@ -33,7 +27,7 @@ public class AlleGegenAlleGeneratorTest {
     @Provide
     Arbitrary<Team> genTeam() {
         Arbitrary<String> nameGen = Arbitraries.strings().withCharRange('a', 'z')
-                .ofMinLength(3).ofMaxLength(21);
+                .ofMinLength(3).ofMaxLength(10);
         Arbitrary<Spieler> spielerGen = genSpieler();
         Arbitrary<List<Spieler>> spielerListGen = spielerGen.collect(list -> size(list) > 5);
         return Combinators.combine(nameGen, spielerListGen).as((name, spielerList) -> {
@@ -46,7 +40,7 @@ public class AlleGegenAlleGeneratorTest {
     @Provide
     Arbitrary<Spieler> genSpieler() {
         Arbitrary<String> nameGen = Arbitraries.strings().withCharRange('a', 'z')
-                .ofMinLength(3).ofMaxLength(21);
+                .ofMinLength(3).ofMaxLength(10);
         return Combinators.combine(nameGen, nameGen).as((name, id) -> {
             Spieler spieler = new Spieler();
             spieler.setName(name);
