@@ -68,7 +68,7 @@ public class Ereignis implements Comparable {
 	@Override
 	public int compareTo(Object o) {
 		Ereignis other = (Ereignis) o;
-		return new Integer(zeitpunktInSekunden).compareTo(other.zeitpunktInSekunden);
+		return Integer.valueOf(zeitpunktInSekunden).compareTo(other.zeitpunktInSekunden);
 	}
 
     @Override
