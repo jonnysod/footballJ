@@ -22,12 +22,19 @@ repositories {
     jcenter()
 }
 
+ext.junitPlatformVersion = '1.6.2'
+ext.junitJupiterVersion = '5.6.2'
+
+
+ext.jqwikVersion = '1.2.7'
+
 test {
     useJUnitPlatform {
-        includeEngines "jqwik"
+        // Include several Junit engines if you use them
+        includeEngines 'jqwik', 'junit-jupiter'
 
-        // includeTags "fast", "medium"
-        // excludeTags "slow"
+        // includeTags 'fast', 'medium'
+        // excludeTags 'slow'
     }
 
     include '**/*Properties.class'
@@ -36,15 +43,12 @@ test {
 }
 
 dependencies {
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:28.0-jre'
-
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
-
     // aggregate jqwik dependency
-    testImplementation "net.jqwik:jqwik:1.2.4"
+    testImplementation "net.jqwik:jqwik:${jqwikVersion}"
+
+    // Add if you also want to use the Jupiter engine or Assertions from it
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
+
+    // Add any other test library you need...
+    testImplementation "org.assertj:assertj-core:3.12.2"
 }
