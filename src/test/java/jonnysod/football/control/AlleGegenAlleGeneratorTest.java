@@ -1,12 +1,16 @@
 package jonnysod.football.control;
 
-import jonnysod.football.model.*;
+import jonnysod.football.model.Spiel;
+import jonnysod.football.model.Spieler;
+import jonnysod.football.model.Spieltag;
+import jonnysod.football.model.Team;
 import jonnysod.football.statistic.SpielInfo;
-import net.jqwik.api.constraints.Size;
 import net.jqwik.api.*;
-import org.assertj.core.util.Lists;
+import net.jqwik.api.constraints.Size;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
