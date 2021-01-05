@@ -1,12 +1,14 @@
 package jonnysod.football.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class Wettbewerb extends ArrayList<Turnier> {
+public class Wettbewerb implements Serializable {
 
+    private ArrayList<Turnier> turniers = new ArrayList<>();
 	private String id;
 	private String name;
 	private final ArrayList<Spieler> spieler = new ArrayList<Spieler>();
@@ -39,12 +41,6 @@ public class Wettbewerb extends ArrayList<Turnier> {
     public String toString() {
         return name;
     }
-
-    public Map<String, Object> exportBaseMap() {
-		Map<String, Object> export = new HashMap<>();
-		export.put("name", this.name);
-		return export;
-	}
 
 	public String getId() {
 		return id;

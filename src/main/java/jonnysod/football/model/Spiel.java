@@ -1,11 +1,11 @@
 package jonnysod.football.model;
 
-import jonnysod.football.Utils;
-
+import java.io.Serializable;
 import java.util.*;
 
-public class Spiel extends ArrayList<Ereignis> {
+public class Spiel implements Serializable, Iterable<Ereignis> {
 
+	private List<Ereignis> ereignisList = new ArrayList<>();
 	private String id;
 	private Team heim;
 	private Team auswaerts;
@@ -24,11 +24,6 @@ public class Spiel extends ArrayList<Ereignis> {
 		this.spiellaengeInSekunden = spiellaengeInSekunden;
 	}
 
-	public Spiel(String id, Map<String, Object> export) {
-		this.id = id;
-		importBaseMap(export);
-	}
-
 	public Team findSpielTeam(String id) {
 		if (heim.getId().equals(id)) {
 			return heim;
@@ -37,12 +32,36 @@ public class Spiel extends ArrayList<Ereignis> {
 		}
 	}
 
-	public void importBaseMap(Map<String, Object> export) {
-		this.spiellaengeInSekunden = ((Number) export.get("spiellaengeInSekunden")).intValue();
-		this.pausedauerInMillisec = ((Number) export.get("pausedauerInMillisec")).longValue();
-		this.start = Utils.dateFormExport(export.get("start"));
-		this.ende = Utils.dateFormExport(export.get("ende"));
-		this.lastPause = Utils.dateFormExport(export.get("lastPause"));
+	public int size() {
+		return ereignisList.size();
+	}
+
+	public boolean isEmpty() {
+		return ereignisList.isEmpty();
+	}
+
+	public boolean contains(Object o) {
+		return ereignisList.contains(o);
+	}
+
+	public boolean add(Ereignis ereignis) {
+		return ereignisList.add(ereignis);
+	}
+
+	public boolean remove(Object o) {
+		return ereignisList.remove(o);
+	}
+
+	public boolean addAll(Collection<? extends Ereignis> collection) {
+		return ereignisList.addAll(collection);
+	}
+
+	public void add(int i, Ereignis ereignis) {
+		ereignisList.add(i, ereignis);
+	}
+
+	public Ereignis remove(int i) {
+		return ereignisList.remove(i);
 	}
 
 	public void pause(Date now) {
@@ -104,23 +123,13 @@ public class Spiel extends ArrayList<Ereignis> {
 		}
 	}
 
-	public Map<String, Object> exportBaseMap() {
-		Map export = new HashMap<String,String>();
-		export.put("spiellaengeInSekunden", spiellaengeInSekunden);
-		export.put("pausedauerInMillisec", pausedauerInMillisec);
-		if (start != null) export.put("start", start.getTime());
-		if (ende != null) export.put("ende", ende.getTime());
-		if (lastPause != null) export.put("lastPause", lastPause.getTime());
-		return export;
-	}
-
 	public Spiel clone() {
 		Spiel spiel = new Spiel(heim, auswaerts, spiellaengeInSekunden);
 		spiel.start = start;
 		spiel.pausedauerInMillisec = pausedauerInMillisec;
 		spiel.ende = ende;
 		spiel.lastPause = lastPause;
-		spiel.addAll(this);
+		spiel.addAll(this.ereignisList);
 		return spiel;
 	}
 
@@ -182,5 +191,10 @@ public class Spiel extends ArrayList<Ereignis> {
 
 	public void setLastPause(Date lastPause) {
 		this.lastPause = lastPause;
+	}
+
+	@Override
+	public Iterator<Ereignis> iterator() {
+		return ereignisList.iterator();
 	}
 }

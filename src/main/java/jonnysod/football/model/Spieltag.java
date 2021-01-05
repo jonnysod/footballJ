@@ -1,12 +1,12 @@
 package jonnysod.football.model;
 
-import jonnysod.football.Utils;
-
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.*;
 
-public class Spieltag extends ArrayList<Spiel> {
+public class Spieltag implements Serializable, Iterable<Spiel> {
 
+    private List<Spiel> spiels = new ArrayList<>();
 	private String id;
 	private String name;
 	private Date start;
@@ -20,10 +20,36 @@ public class Spieltag extends ArrayList<Spiel> {
 		this.name = getFormattedErstellungsDatum();
 	}
 
-	public Spieltag(String id, Map<String, Object> export) {
-		this.id = id;
-		this.name = (String) export.get("name");
-		this.start = Utils.dateFormExport(export.get("start"));
+	public boolean addAll(Collection<? extends Spiel> collection) {
+		return spiels.addAll(collection);
+	}
+
+	public int size() {
+		return spiels.size();
+	}
+
+	public Spiel get(int i) {
+		return spiels.get(i);
+	}
+
+	public boolean contains(Object o) {
+		return spiels.contains(o);
+	}
+
+	public boolean add(Spiel spiel) {
+		return spiels.add(spiel);
+	}
+
+	public boolean remove(Object o) {
+		return spiels.remove(o);
+	}
+
+	public void add(int i, Spiel spiel) {
+		spiels.add(i, spiel);
+	}
+
+	public Spiel remove(int i) {
+		return spiels.remove(i);
 	}
 
 	public String getName() {
@@ -52,18 +78,11 @@ public class Spieltag extends ArrayList<Spiel> {
 	}
 
 	public Spiel findSpiel(String spielId) {
-        for (Spiel s : this) {
+        for (Spiel s : this.spiels) {
             if (spielId.equals(s.getId())) return s;
         }
         return null;
     }
-
-    public Map<String, Object> exportBaseMap() {
-		Map export = new HashMap<String,String>();
-		export.put("name", name);
-		export.put("start", start.getTime());
-		return export;
-	}
 
 	public String getId() {
 		return id;
@@ -71,5 +90,14 @@ public class Spieltag extends ArrayList<Spiel> {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public List<Spiel> getSpiels() {
+		return spiels;
+	}
+
+	@Override
+	public Iterator<Spiel> iterator() {
+		return spiels.iterator();
 	}
 }

@@ -37,7 +37,7 @@ public class TabelleTest {
             }
         }
 
-        Tabelle tabelle = new Tabelle(spieltag, teams);
+        Tabelle tabelle = new Tabelle(spieltag.getSpiels(), teams);
         assertSame(team1 , tabelle.teamTabellenDatenList.get(0).team);
         assertSame(team3 , tabelle.teamTabellenDatenList.get(2).team);
 

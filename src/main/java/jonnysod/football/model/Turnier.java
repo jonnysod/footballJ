@@ -1,11 +1,12 @@
 package jonnysod.football.model;
 
-import jonnysod.football.Utils;
-
+import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
 
-public class Turnier extends ArrayList<Spieltag> {
+public class Turnier implements Serializable, Iterable<Spieltag> {
 
+	private List<Spieltag> spieltags = new ArrayList<>();
 	private String id;
 	private String name;
 	private TurnierTyp typ;
@@ -22,11 +23,32 @@ public class Turnier extends ArrayList<Spieltag> {
 		this.teams.addAll(teams);
 	}
 
-	public Turnier(String id, Map<String, Object> export) {
-		this.id = id;
-		this.name = (String) export.get("name");
-		this.typ = TurnierTyp.getTyp(((Number) export.get("typ")).intValue());
-		this.start = Utils.dateFormExport(export.get("start"));
+	public int size() {
+		return spieltags.size();
+	}
+
+	public boolean add(Spieltag spieltag) {
+		return this.spieltags.add(spieltag);
+	}
+
+	public boolean remove(Object o) {
+		return spieltags.remove(o);
+	}
+
+	public Spieltag get(int i) {
+		return spieltags.get(i);
+	}
+
+	public void add(int i, Spieltag spieltag) {
+		spieltags.add(i, spieltag);
+	}
+
+	public boolean remove(Spieltag spieltag) {
+		return this.spieltags.remove(spieltag);
+	}
+
+	public Spieltag remove(int index) {
+		return this.spieltags.remove(index);
 	}
 
 	@Override
@@ -45,7 +67,7 @@ public class Turnier extends ArrayList<Spieltag> {
 
 	public Spieltag findSpieltagForSpiel(Spiel s) {
 		Spieltag spieltag = null;
-		for (Spieltag st  : this) {
+		for (Spieltag st  : this.spieltags) {
 			if (st.contains(s)) {
 				spieltag = st;
 				break;
@@ -56,7 +78,7 @@ public class Turnier extends ArrayList<Spieltag> {
 
 	public List<Spiel> findAllSpiele() {
 		List<Spiel> spiele = new ArrayList<>();
-		for (Spieltag spieltag : this) {
+		for (Spieltag spieltag : this.spieltags) {
 			for (Spiel spiel : spieltag) {
 				spiele.add(spiel);
 			}
@@ -65,18 +87,10 @@ public class Turnier extends ArrayList<Spieltag> {
 	}
 
 	public Spieltag findSpieltag(String stId) {
-		for (Spieltag st : this) {
+		for (Spieltag st : this.spieltags) {
 			if (stId.equals(st.getId())) return st;
 		}
 		return null;
-	}
-
-	public Map<String, Object> exportBaseMap() {
-		Map export = new HashMap<String,String>();
-		export.put("name", name);
-		export.put("typ", typ.getId());
-		export.put("start", start.getTime());
-		return export;
 	}
 
 	public String getId() {
@@ -113,5 +127,20 @@ public class Turnier extends ArrayList<Spieltag> {
 
 	public List<Team> getTeams() {
 		return teams;
+	}
+
+	@Override
+	public Iterator<Spieltag> iterator() {
+		return spieltags.iterator();
+	}
+
+	@Override
+	public void forEach(Consumer<? super Spieltag> action) {
+
+	}
+
+	@Override
+	public Spliterator<Spieltag> spliterator() {
+		return null;
 	}
 }

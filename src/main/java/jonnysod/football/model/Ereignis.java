@@ -1,10 +1,11 @@
 package jonnysod.football.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Ereignis implements Comparable {
+public class Ereignis implements Comparable, Serializable {
 
 	private String id;
 	private EreignisTyp typ;
