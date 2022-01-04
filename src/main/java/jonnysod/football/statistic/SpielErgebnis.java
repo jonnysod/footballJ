@@ -6,6 +6,20 @@ import jonnysod.football.model.Spiel;
 import jonnysod.football.model.Team;
 
 import java.util.Map;
+
+/**
+ * Can be used to display a result up to a certain `Ereignis` a zwischenergebnis.
+ *
+ * Eg. 4 tor `Ereignisse` leading to a total score of 2:2 (`spielstand()`).
+ * With this list of ereignisse [Tor(heim), Tor(auswaerts), Tor(auswaerts), Tor(heim)],
+ * we would have this zwischenergebnisse:
+ * 1:0
+ * 1:1
+ * 1:2
+ * 2:2
+ *
+ * Additionally this prints out nicely which player scored and which player played the final pass.
+ */
 public class SpielErgebnis {
 
 	Spiel spiel;
