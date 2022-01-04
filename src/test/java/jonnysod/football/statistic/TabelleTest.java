@@ -29,11 +29,11 @@ public class TabelleTest {
             if (new SpielInfo(spiel).teilnehmer(team1)) {
                 Ereignis tor = new Ereignis(EreignisTyp.TOR, 0, new Date());
                 tor.setTeam(team1);
-                spiel.add(tor);
+                spiel.getEreignisList().add(tor);
             } else {
                 Ereignis tor = new Ereignis(EreignisTyp.TOR, 0, new Date());
                 tor.setTeam(team2);
-                spiel.add(tor);
+                spiel.getEreignisList().add(tor);
             }
         }
 

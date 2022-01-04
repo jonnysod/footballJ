@@ -62,7 +62,7 @@ public class AlleGegenAlleGeneratorTest {
         Arbitrary<List<Spieler>> spielerListGen = spielerGen.collect(list -> list.size() > 5);
         return Combinators.combine(nameGen, spielerListGen).as((name, spielerList) -> {
             Team team = new Team(name, name);
-            team.addAll(spielerList);
+            team.getSpieler().addAll(spielerList);
             return team;
         });
     }

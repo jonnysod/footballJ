@@ -35,9 +35,9 @@ public class EreignisInfo {
 
     private Team getOtherSpieler(Spieler spieler, String teamName) {
         Team otherSpieler = new Team(teamName);
-        for (Spieler s  : e.getTeam()) {
+        for (Spieler s  : e.getTeam().getSpieler()) {
             if (!s.getId().equals(spieler.getId())) {
-                otherSpieler.add(s);
+                otherSpieler.getSpieler().add(s);
             }
         }
         return otherSpieler;

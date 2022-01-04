@@ -3,14 +3,14 @@ package jonnysod.football.model;
 import java.io.Serializable;
 import java.util.*;
 
-public class Spiel implements Serializable, Iterable<Ereignis> {
+public class Spiel implements Serializable {
 
 	private List<Ereignis> ereignisList = new ArrayList<>();
 	private String id;
-	private Team heim;
-	private Team auswaerts;
+	private SpielTeam heim;
+	private SpielTeam auswaerts;
 	private int spiellaengeInSekunden;
-	private long pausedauerInMillisec = 0;
+	private Long pausedauerInMillisec = 0L;
 	private Date start = null;
 	private Date ende = null;
     private Date lastPause = null;
@@ -19,49 +19,28 @@ public class Spiel implements Serializable, Iterable<Ereignis> {
 	}
 
 	public Spiel(Team heim, Team auswaerts, int spiellaengeInSekunden) {
+		this.heim = new SpielTeam(heim);
+		this.auswaerts = new SpielTeam(auswaerts);
+		this.spiellaengeInSekunden = spiellaengeInSekunden;
+	}
+
+	public Spiel(String id, SpielTeam heim, SpielTeam auswaerts, int spiellaengeInSekunden) {
+		this.id = id;
 		this.heim = heim;
 		this.auswaerts = auswaerts;
 		this.spiellaengeInSekunden = spiellaengeInSekunden;
 	}
 
 	public Team findSpielTeam(String id) {
-		if (heim.getId().equals(id)) {
-			return heim;
+		if (heim.getTeam().getId().equals(id)) {
+			return heim.getTeam();
 		} else {
-			return auswaerts;
+			return auswaerts.getTeam();
 		}
 	}
 
-	public int size() {
-		return ereignisList.size();
-	}
-
-	public boolean isEmpty() {
-		return ereignisList.isEmpty();
-	}
-
-	public boolean contains(Object o) {
-		return ereignisList.contains(o);
-	}
-
-	public boolean add(Ereignis ereignis) {
-		return ereignisList.add(ereignis);
-	}
-
-	public boolean remove(Object o) {
-		return ereignisList.remove(o);
-	}
-
-	public boolean addAll(Collection<? extends Ereignis> collection) {
-		return ereignisList.addAll(collection);
-	}
-
-	public void add(int i, Ereignis ereignis) {
-		ereignisList.add(i, ereignis);
-	}
-
-	public Ereignis remove(int i) {
-		return ereignisList.remove(i);
+	public List<Ereignis> getEreignisList() {
+		return ereignisList;
 	}
 
 	public void pause(Date now) {
@@ -108,7 +87,7 @@ public class Spiel implements Serializable, Iterable<Ereignis> {
 			if (id != null) {
 				return id.equals(other.getId());
 			} else {
-				return other.getHeim().equals(heim) && other.getAuswaerts().equals(auswaerts);
+				return other.getHeim().equals(getHeim()) && other.getAuswaerts().equals(getAuswaerts());
 			}
 		}
 		return false;
@@ -123,13 +102,13 @@ public class Spiel implements Serializable, Iterable<Ereignis> {
 		}
 	}
 
-	public Spiel clone() {
-		Spiel spiel = new Spiel(heim, auswaerts, spiellaengeInSekunden);
+	public Spiel clone1() {
+		Spiel spiel = new Spiel(heim.getTeam(), auswaerts.getTeam(), spiellaengeInSekunden);
 		spiel.start = start;
 		spiel.pausedauerInMillisec = pausedauerInMillisec;
 		spiel.ende = ende;
 		spiel.lastPause = lastPause;
-		spiel.addAll(this.ereignisList);
+		spiel.getEreignisList().addAll(this.ereignisList);
 		return spiel;
 	}
 
@@ -141,31 +120,31 @@ public class Spiel implements Serializable, Iterable<Ereignis> {
 		this.id = id;
 	}
 
-	public Team getHeim() {
+	public SpielTeam getHeim() {
 		return heim;
 	}
 
-	public void setHeim(Team heim) {
-		this.heim = heim;
-	}
-
-	public Team getAuswaerts() {
+	public SpielTeam getAuswaerts() {
 		return auswaerts;
 	}
 
-	public void setAuswaerts(Team auswaerts) {
-		this.auswaerts = auswaerts;
+	public Team getHeimTeam() {
+		return heim.getTeam();
+	}
+
+	public Team getAuswaertsTeam() {
+		return auswaerts.getTeam();
 	}
 
 	public int getSpiellaengeInSekunden() {
 		return spiellaengeInSekunden;
 	}
 
-	public long getPausedauerInMillisec() {
+	public Long getPausedauerInMillisec() {
 		return pausedauerInMillisec;
 	}
 
-	public void setPausedauerInMillisec(long pausedauerInMillisec) {
+	public void setPausedauerInMillisec(Long pausedauerInMillisec) {
 		this.pausedauerInMillisec = pausedauerInMillisec;
 	}
 
@@ -193,8 +172,4 @@ public class Spiel implements Serializable, Iterable<Ereignis> {
 		this.lastPause = lastPause;
 	}
 
-	@Override
-	public Iterator<Ereignis> iterator() {
-		return ereignisList.iterator();
-	}
 }

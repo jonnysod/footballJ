@@ -4,51 +4,26 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class Turnier implements Serializable, Iterable<Spieltag> {
+public class Turnier implements Serializable {
 
 	private List<Spieltag> spieltags = new ArrayList<>();
 	private String id;
 	private String name;
 	private TurnierTyp typ;
-	private Date start;
-	private final List<Team> teams = new ArrayList<>();
+	private Long start;
+	private List<Team> teams = new ArrayList<>();
 
 	public Turnier() {
 	}
 
-	public Turnier(String name, TurnierTyp typ, Date start, List<Team> teams) {
+	public Turnier(String name, TurnierTyp typ, Long start) {
 		this.name = name;
 		this.typ = typ;
 		this.start = start;
-		this.teams.addAll(teams);
 	}
 
-	public int size() {
-		return spieltags.size();
-	}
-
-	public boolean add(Spieltag spieltag) {
-		return this.spieltags.add(spieltag);
-	}
-
-	public boolean remove(Object o) {
-		return spieltags.remove(o);
-	}
-
-	public Spieltag get(int i) {
-		return spieltags.get(i);
-	}
-
-	public void add(int i, Spieltag spieltag) {
-		spieltags.add(i, spieltag);
-	}
-
-	public boolean remove(Spieltag spieltag) {
-		return this.spieltags.remove(spieltag);
-	}
-
-	public Spieltag remove(int index) {
-		return this.spieltags.remove(index);
+	public List<Spieltag> getSpieltags() {
+		return spieltags;
 	}
 
 	@Override
@@ -117,11 +92,11 @@ public class Turnier implements Serializable, Iterable<Spieltag> {
 		this.typ = typ;
 	}
 
-	public Date getStart() {
+	public Long getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
+	public void setStart(Long start) {
 		this.start = start;
 	}
 
@@ -129,18 +104,4 @@ public class Turnier implements Serializable, Iterable<Spieltag> {
 		return teams;
 	}
 
-	@Override
-	public Iterator<Spieltag> iterator() {
-		return spieltags.iterator();
-	}
-
-	@Override
-	public void forEach(Consumer<? super Spieltag> action) {
-
-	}
-
-	@Override
-	public Spliterator<Spieltag> spliterator() {
-		return null;
-	}
 }

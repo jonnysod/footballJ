@@ -22,9 +22,9 @@ public class Tabelle {
 			teamTabellenDatenMap.put(team.getId(), teamInTabelle);
 		}
 		for (Spiel spiel : spiele) {
-			Team heim = spiel.getHeim();
+			Team heim = spiel.getHeimTeam();
 			addTabellenDaten(spiel, heim);
-			Team auswaerts = spiel.getAuswaerts();
+			Team auswaerts = spiel.getAuswaertsTeam();
 			addTabellenDaten(spiel, auswaerts);
 		}
 		Collections.sort(teamTabellenDatenList);

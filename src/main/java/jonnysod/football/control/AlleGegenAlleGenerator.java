@@ -109,8 +109,8 @@ public class AlleGegenAlleGenerator implements SpieltagGenerator {
 			for (int i = teamIndex+1; i < teamSpieleHistorieList.size(); i++) {
 				Team auswaerts = teamSpieleHistorieList.get(i).team;
 				for (Spiel spiel : spiele) {
-					if (spiel.getHeim().equals(naechtesTeam)
-						&& spiel.getAuswaerts().equals(auswaerts)) {
+					if (spiel.getHeimTeam().equals(naechtesTeam)
+						&& spiel.getAuswaertsTeam().equals(auswaerts)) {
 							return spiel;
 						}
 				}
@@ -119,8 +119,8 @@ public class AlleGegenAlleGenerator implements SpieltagGenerator {
 			for (int i = teamIndex+1; i < teamSpieleHistorieList.size(); i++) {
 				Team heim = teamSpieleHistorieList.get(i).team;
 				for (Spiel spiel : spiele) {
-					if (spiel.getHeim().equals(heim)
-						&& spiel.getAuswaerts().equals(naechtesTeam)) {
+					if (spiel.getHeimTeam().equals(heim)
+						&& spiel.getAuswaertsTeam().equals(naechtesTeam)) {
 							return spiel;
 						}
 				}

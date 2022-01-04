@@ -1,27 +1,26 @@
 package jonnysod.football.model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Team extends ArrayList<Spieler> {
+public class Team implements Serializable {
 
 	private String id;
 	private String name;
+	private List<Spieler> spielerList;
 
 	public Team() {
 	}
 
 	public Team(String name) {
 		this.name = name;
+		this.spielerList = new ArrayList<>();
 	}
 
 	public Team(String id, String name) {
 		this.id = id;
 		this.name = name;
-	}
-
-	public Team(String id, Map<String, Object> export) {
-		this.id = id;
-		this.name = (String) export.get("name");
+		this.spielerList = new ArrayList<>();
 	}
 
 	@Override
@@ -37,15 +36,19 @@ public class Team extends ArrayList<Spieler> {
 		StringBuilder teamSpieler = new StringBuilder();
 		teamSpieler.append(toString())
 			.append(": ");
-		for (Spieler s : this) {
+		for (Spieler s : getSpieler()) {
 			teamSpieler.append(s.toString())
 				.append(", ");
 		}
-		if (this.size() > 0) {
+		if (this.spielerList.size() > 0) {
 			int length = teamSpieler.length();
 			teamSpieler.delete(length-2, length);
 		}
 		return teamSpieler.toString();
+	}
+
+	public boolean isMember(Spieler spieler) {
+		return spielerList.contains(spieler);
 	}
 
 	@Override
@@ -80,12 +83,6 @@ public class Team extends ArrayList<Spieler> {
 //		return teams;
 //	}
 
-	public Map<String, Object> exportBaseMap() {
-		Map<String, Object> export = new HashMap<>();
-		export.put("name", this.name);
-		return export;
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -100,5 +97,9 @@ public class Team extends ArrayList<Spieler> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<Spieler> getSpieler() {
+		return spielerList;
 	}
 }

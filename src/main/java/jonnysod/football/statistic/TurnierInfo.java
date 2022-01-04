@@ -22,14 +22,14 @@ public class TurnierInfo {
     public List<Spieler> findAllSpieler() {
         List<Spieler> allSpieler = new ArrayList<Spieler>();
         for (Team team : t.getTeams()) {
-            allSpieler.addAll(team);
+            allSpieler.addAll(team.getSpieler());
         }
         return allSpieler;
     }
 
     public List<Spiel> findAllSpiele() {
         List<Spiel> spiele = new ArrayList<>();
-        for (Spieltag spieltag : t) {
+        for (Spieltag spieltag : t.getSpieltags()) {
             for (Spiel spiel : spieltag) {
                 spiele.add(spiel);
             }
@@ -38,8 +38,8 @@ public class TurnierInfo {
     }
 
     public Spiel findLastSpiel() {
-        int lastSpieltagPos = t.size() - 1;
-        Spieltag lastSt = t.get(lastSpieltagPos);
+        int lastSpieltagPos = t.getSpieltags().size() - 1;
+        Spieltag lastSt = t.getSpieltags().get(lastSpieltagPos);
         int lastSpielPos = lastSt.size() - 1;
         return lastSt.get(lastSpielPos);
     }

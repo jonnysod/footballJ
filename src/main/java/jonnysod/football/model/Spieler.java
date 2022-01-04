@@ -1,23 +1,19 @@
 package jonnysod.football.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-public class Spieler {
+public class Spieler implements Serializable {
 
 	private String id;
 	private String name;
-	public final List<Integer> eintrittsZeitpunktInSekunden = new ArrayList<>();
-	public final List<Integer> austrittsZeitpunktInSekunden = new ArrayList<>();
 
 	public Spieler() {
 		super();
 	}
 	
-	public Spieler(String name, jonnysod.football.model.Wettbewerb wettbewerb) {
+	public Spieler(String name) {
 		super();
 		this.name = name;
-		wettbewerb.getSpieler().add(this);
 	}
 
 	@Override

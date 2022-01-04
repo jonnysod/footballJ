@@ -52,7 +52,7 @@ public class ScorerListe {
 
 	private List<Spiel> findSpiele(Turnier turnier) {
         List<Spiel> spiele = new ArrayList<>();
-        for (Spieltag spieltag : turnier) {
+        for (Spieltag spieltag : turnier.getSpieltags()) {
             for (Spiel spiel : spieltag) {
                 spiele.add(spiel);
             }
