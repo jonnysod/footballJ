@@ -1,0 +1,1 @@
+footballJ is a library to model football games, creating tournaments and compute results and statistics.   
