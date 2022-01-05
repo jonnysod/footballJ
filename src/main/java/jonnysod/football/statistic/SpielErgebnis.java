@@ -22,8 +22,8 @@ import java.util.Map;
  */
 public class SpielErgebnis {
 
-	Spiel spiel;
-	Map<TextId, String> textMap;
+	private Spiel spiel;
+	private final Map<TextId, String> textMap;
 
     public SpielErgebnis(Spiel spiel, Map<TextId, String> textMap) {
         this.spiel = spiel;
