@@ -15,6 +15,17 @@ public class EreignisInfo {
         this.e = e;
     }
 
+    public String printZeitpunktInMinuten() {
+        int minuten = e.getZeitpunktInSekunden() / 60;
+        int sekunden = e.getZeitpunktInSekunden() % 60;
+        String zeit = minuten + "'";
+        if (sekunden < 10) {
+            zeit += 0;
+        }
+        zeit += sekunden + "''";
+        return zeit;
+    }
+
     public Team findMoeglicheVorlagengeber() {
         if (e.getSpieler() == null) {
             return e.getTeam();

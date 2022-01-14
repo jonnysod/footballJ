@@ -57,7 +57,7 @@ public class SpielErgebnis {
                     && e.getTeam().equals(team)
                     && ( EreignisTyp.TOR == e.getTyp()
 							|| EreignisTyp.EIGENTOR == e.getTyp())) {
-				toreList.append(printZeitpunktInMinuten(e));
+				toreList.append(new EreignisInfo(e).printZeitpunktInMinuten());
 				if (e.getSpieler() != null) {
 					toreList.append(" ").append(e.getSpieler().getName());
 				}
@@ -94,7 +94,7 @@ public class SpielErgebnis {
                 ereignis.append(e.getSpieler().getName());
             }
             ereignis.append(" (")
-                    .append(printZeitpunktInMinuten(e));
+                    .append(new EreignisInfo(e).printZeitpunktInMinuten());
             if (EreignisTyp.EIGENTOR == typ) {
                 ereignis.append(", ")
                         .append(textMap.get(TextId.EIGENTOR));
@@ -144,17 +144,6 @@ public class SpielErgebnis {
             vorlageString.append(textMap.get(TextId.KEINE_VORLAGE));
         }
         return vorlageString.toString();
-    }
-
-    public String printZeitpunktInMinuten(Ereignis e) {
-        int minuten = e.getZeitpunktInSekunden() / 60;
-        int sekunden = e.getZeitpunktInSekunden() % 60;
-        String zeit = minuten+":";
-        if (sekunden < 10) {
-            zeit += 0;
-        }
-        zeit += sekunden;
-        return zeit;
     }
 
     public String getSpielverlauf() {
