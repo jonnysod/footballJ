@@ -2,6 +2,7 @@ package jonnysod.football.control;
 
 import jonnysod.football.model.Spiel;
 import jonnysod.football.model.SpielSpieler;
+import jonnysod.football.model.SpielTeam;
 import jonnysod.football.model.Spieler;
 import jonnysod.football.statistic.SpielInfo;
 
@@ -16,8 +17,16 @@ public class SpielHelper {
     }
 
     public boolean removeFromHeim(Spieler spieler, Date now) {
+        return removeFrom(spiel.getHeim(), spieler, now);
+    }
+
+    public boolean removeFromAuswaerts(Spieler spieler, Date now) {
+        return removeFrom(spiel.getHeim(), spieler, now);
+    }
+
+    private boolean removeFrom(SpielTeam team, Spieler spieler, Date now) {
         SpielInfo info = new SpielInfo(spiel);
-        SpielSpieler spielSpieler = info.findSpielSpieler(spiel.getHeim(), spieler);
+        SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
         if (!info.isBeendet()) {
             if (info.isStarted()) {
                 spielSpieler.getAustrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
