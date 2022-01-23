@@ -46,14 +46,6 @@ public class SpielInfo {
         return alleEs;
     }
 
-    public Spieler findSpieler(long spielerId) {
-        Spieler spieler = findSpieler(s.getHeim(), spielerId);
-        if (spieler==null) {
-            spieler = findSpieler(s.getAuswaerts(), spielerId);
-        }
-        return spieler;
-    }
-
     public void resetData() {
         s.setStart(null);
         s.setPausedauerInMillisec(0L);
@@ -74,10 +66,14 @@ public class SpielInfo {
         return alleSpieler;
     }
 
-    public Spieler findSpieler(SpielTeam t, long spielerId) {
-        for (SpielSpieler s : t.getSpielerList()) {
-            if (s.getId().equals(spielerId)) {
-                return s.getSpieler();
+    public Spieler findSpieler(SpielTeam t, Spieler spieler) {
+        return findSpielSpieler(t, spieler).getSpieler();
+    }
+
+    public SpielSpieler findSpielSpieler(SpielTeam t, Spieler s) {
+        for (SpielSpieler spielSpieler : t.getSpielerList()) {
+            if (s.equals(s)) {
+                return spielSpieler;
             }
         }
         return null;
@@ -168,6 +164,10 @@ public class SpielInfo {
             referenceTime = s.getLastPause();
         }
         return (referenceTime.getTime()-s.getStart().getTime())-s.getPausedauerInMillisec();
+    }
+
+    public int zeitpunktInSekunden(Date now) {
+        return Math.toIntExact((calcSpieldauer(now) / 1000));
     }
 
     public boolean isEnded() {
