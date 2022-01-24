@@ -16,6 +16,31 @@ public class SpielHelper {
         this.spiel = spiel;
     }
 
+    public boolean addToHeim(Spieler spieler, Date now) {
+        return addTo(spiel.getHeim(), spieler, now);
+    }
+
+    public boolean addToAuswaerts(Spieler spieler, Date now) {
+        return addTo(spiel.getHeim(), spieler, now);
+    }
+
+    private boolean addTo(SpielTeam team, Spieler spieler, Date now) {
+        SpielInfo info = new SpielInfo(spiel);
+        SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
+        if (spielSpieler == null) {
+            spielSpieler = new SpielSpieler(spieler);
+        }
+        if (!info.isBeendet()) {
+            if (info.isStarted()) {
+                spielSpieler.getEintrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
+                return true;
+            } else {
+                return team.getSpielerList().add(spielSpieler);
+            }
+        }
+        return false;
+    }
+
     public boolean removeFromHeim(Spieler spieler, Date now) {
         return removeFrom(spiel.getHeim(), spieler, now);
     }
@@ -32,7 +57,7 @@ public class SpielHelper {
                 spielSpieler.getAustrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
                 return true;
             } else {
-                return spiel.getHeim().getSpielerList().remove(spielSpieler);
+                return team.getSpielerList().remove(spielSpieler);
             }
         }
         return false;
