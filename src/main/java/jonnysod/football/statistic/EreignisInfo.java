@@ -1,9 +1,6 @@
 package jonnysod.football.statistic;
 
-import jonnysod.football.model.Ereignis;
-import jonnysod.football.model.EreignisTyp;
-import jonnysod.football.model.Spieler;
-import jonnysod.football.model.Team;
+import jonnysod.football.model.*;
 
 /**
  * Created by jonny on 19.07.15.
@@ -26,29 +23,21 @@ public class EreignisInfo {
         return zeit;
     }
 
-    public Team findMoeglicheVorlagengeber() {
-        if (e.getSpieler() == null) {
-            return e.getTeam();
-        } else {
-            return getOtherSpieler(e.getSpieler(), "Vorlagengeber");
-        }
+    public Team findMoeglicheVorlagengeber(SpielTeam spielTeam) {
+        return getOtherSpieler(e.getSpieler(), spielTeam, "Vorlagengeber");
     }
 
-    public Team findMoeglicheSchuetzen() {
+    public Team findMoeglicheSchuetzen(SpielTeam spielTeam) {
         Ereignis vorlage = e.getFolgeEreignis(EreignisTyp.VORLAGE);
-        if (vorlage == null
-                || vorlage.getSpieler() == null) {
-            return e.getTeam();
-        } else {
-            return getOtherSpieler(vorlage.getSpieler(), "Schuetzen");
-        }
+        Spieler vorlagenSpieler = vorlage == null? null : vorlage.getSpieler();
+        return getOtherSpieler(vorlage.getSpieler(), spielTeam, "Schuetzen");
     }
 
-    private Team getOtherSpieler(Spieler spieler, String teamName) {
+    private Team getOtherSpieler(Spieler spieler, SpielTeam spielTeam, String teamName) {
         Team otherSpieler = new Team(teamName);
-        for (Spieler s  : e.getTeam().getSpieler()) {
-            if (!s.getId().equals(spieler.getId())) {
-                otherSpieler.getSpieler().add(s);
+        for (SpielSpieler s  : spielTeam.getSpielerList()) {
+            if (!s.equals(spieler)) {
+                otherSpieler.getSpieler().add(s.getSpieler());
             }
         }
         return otherSpieler;
