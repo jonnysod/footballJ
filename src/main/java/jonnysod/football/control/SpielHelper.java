@@ -26,17 +26,16 @@ public class SpielHelper {
 
     private boolean addTo(SpielTeam team, Spieler spieler, Date now) {
         SpielInfo info = new SpielInfo(spiel);
-        SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
-        if (spielSpieler == null) {
-            spielSpieler = new SpielSpieler(spieler);
-        }
         if (!info.isBeendet()) {
-            if (info.isStarted()) {
-                spielSpieler.getEintrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
-                return true;
-            } else {
-                return team.getSpielerList().add(spielSpieler);
+            SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
+            if (spielSpieler == null) {
+                spielSpieler = new SpielSpieler(spieler);
+                team.getSpielerList().add(spielSpieler);
             }
+            if (info.isStarted() && !spiel.getStart().equals(now)) {
+                spielSpieler.getEintrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
+            }
+            return true;
         }
         return false;
     }
