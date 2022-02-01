@@ -72,7 +72,7 @@ public class SpielInfo {
 
     public SpielSpieler findSpielSpieler(SpielTeam t, Spieler s) {
         for (SpielSpieler spielSpieler : t.getSpielerList()) {
-            if (s.equals(s)) {
+            if (spielSpieler.getSpieler().equals(s)) {
                 return spielSpieler;
             }
         }
