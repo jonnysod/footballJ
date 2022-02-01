@@ -45,7 +45,7 @@ public class SpielHelper {
     }
 
     public boolean removeFromAuswaerts(Spieler spieler, Date now) {
-        return removeFrom(spiel.getHeim(), spieler, now);
+        return removeFrom(spiel.getAuswaerts(), spieler, now);
     }
 
     private boolean removeFrom(SpielTeam team, Spieler spieler, Date now) {
