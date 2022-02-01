@@ -54,6 +54,22 @@ class SpielHelperTest {
 
     @Test
     void addToAuswaerts() {
+        Spieler spieler = new Spieler("Spieler 1");
+        notStartedSpielHelper.addToAuswaerts(spieler, start);
+        SpielSpieler spielSpieler = notStartedSpielHelper.spiel.getAuswaerts().getSpielerList().get(0);
+        assertEquals(new ArrayList<>(), spielSpieler.getEintrittsZeitpunktInSekunden());
+        // Add to started spiel
+        // Add at start time
+        startedSpielHelper.addToAuswaerts(spieler, start);
+        spielSpieler = startedSpielHelper.spiel.getAuswaerts().getSpielerList().get(0);
+        assertEquals(new ArrayList<>(), spielSpieler.getEintrittsZeitpunktInSekunden());
+        // Add 5 seconds after start time
+        int seconds = 5;
+        Date afterSeconds = (Date) start.clone();
+        afterSeconds.setSeconds(start.getSeconds() + seconds);
+        startedSpielHelper.addToAuswaerts(spieler, afterSeconds);
+        spielSpieler = startedSpielHelper.spiel.getAuswaerts().getSpielerList().get(0);
+        assertEquals(Arrays.asList(seconds), spielSpieler.getEintrittsZeitpunktInSekunden());
     }
 
     @Test

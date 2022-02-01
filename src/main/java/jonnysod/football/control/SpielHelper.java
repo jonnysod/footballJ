@@ -21,7 +21,7 @@ public class SpielHelper {
     }
 
     public boolean addToAuswaerts(Spieler spieler, Date now) {
-        return addTo(spiel.getHeim(), spieler, now);
+        return addTo(spiel.getAuswaerts(), spieler, now);
     }
 
     private boolean addTo(SpielTeam team, Spieler spieler, Date now) {
