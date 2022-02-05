@@ -7,6 +7,7 @@ import jonnysod.football.model.Spieler;
 import jonnysod.football.statistic.SpielInfo;
 
 import java.util.Date;
+import java.util.List;
 
 public class SpielHelper {
 
@@ -33,7 +34,15 @@ public class SpielHelper {
                 team.getSpielerList().add(spielSpieler);
             }
             if (info.isStarted() && !spiel.getStart().equals(now)) {
-                spielSpieler.getEintrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
+                int zeitpunktInSekunden = info.zeitpunktInSekunden(now);
+                List<Integer> austrittsZeitpunktList = spielSpieler.getAustrittsZeitpunktInSekunden();
+                int lastIndex = austrittsZeitpunktList.size() - 1;
+                if (!austrittsZeitpunktList.isEmpty() && zeitpunktInSekunden == austrittsZeitpunktList.get(lastIndex)) {
+                    austrittsZeitpunktList.remove(lastIndex);
+                } else {
+                    // By the way, this is the normal case but because of java couldn't put it in front
+                    spielSpieler.getEintrittsZeitpunktInSekunden().add(zeitpunktInSekunden);
+                }
             }
             return true;
         }
@@ -53,7 +62,15 @@ public class SpielHelper {
         SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
         if (!info.isBeendet()) {
             if (info.isStarted()) {
-                spielSpieler.getAustrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
+                int zeitpunktInSekunden = info.zeitpunktInSekunden(now);
+                List<Integer> eintrittsZeitpunktList = spielSpieler.getEintrittsZeitpunktInSekunden();
+                int lastIndex = eintrittsZeitpunktList.size() - 1;
+                if (!eintrittsZeitpunktList.isEmpty() && zeitpunktInSekunden == eintrittsZeitpunktList.get(lastIndex)) {
+                    eintrittsZeitpunktList.remove(lastIndex);
+                } else {
+                    // Again the normal case but I wasn't able to write it at top of if-else
+                    spielSpieler.getAustrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
+                }
                 return true;
             } else {
                 return team.getSpielerList().remove(spielSpieler);
