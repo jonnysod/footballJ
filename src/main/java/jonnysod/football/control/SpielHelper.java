@@ -6,7 +6,6 @@ import jonnysod.football.model.SpielTeam;
 import jonnysod.football.model.Spieler;
 import jonnysod.football.statistic.SpielInfo;
 
-import java.util.Date;
 import java.util.List;
 
 public class SpielHelper {
@@ -17,15 +16,15 @@ public class SpielHelper {
         this.spiel = spiel;
     }
 
-    public boolean addToHeim(Spieler spieler, Date now) {
+    public boolean addToHeim(Spieler spieler, Long now) {
         return addTo(spiel.getHeim(), spieler, now);
     }
 
-    public boolean addToAuswaerts(Spieler spieler, Date now) {
+    public boolean addToAuswaerts(Spieler spieler, Long now) {
         return addTo(spiel.getAuswaerts(), spieler, now);
     }
 
-    private boolean addTo(SpielTeam team, Spieler spieler, Date now) {
+    private boolean addTo(SpielTeam team, Spieler spieler, Long now) {
         SpielInfo info = new SpielInfo(spiel);
         if (!info.isBeendet()) {
             SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
@@ -49,15 +48,15 @@ public class SpielHelper {
         return false;
     }
 
-    public boolean removeFromHeim(Spieler spieler, Date now) {
+    public boolean removeFromHeim(Spieler spieler, Long now) {
         return removeFrom(spiel.getHeim(), spieler, now);
     }
 
-    public boolean removeFromAuswaerts(Spieler spieler, Date now) {
+    public boolean removeFromAuswaerts(Spieler spieler, Long now) {
         return removeFrom(spiel.getAuswaerts(), spieler, now);
     }
 
-    private boolean removeFrom(SpielTeam team, Spieler spieler, Date now) {
+    private boolean removeFrom(SpielTeam team, Spieler spieler, Long now) {
         SpielInfo info = new SpielInfo(spiel);
         SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
         if (!info.isBeendet()) {

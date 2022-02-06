@@ -3,8 +3,6 @@ package jonnysod.football.statistic;
 import jonnysod.football.model.*;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -155,18 +153,18 @@ public class SpielInfo {
         }
     }
 
-    public long calcSpieldauer(Date now) {
+    public long calcSpieldauer(Long now) {
         if (s.getStart()==null) {
             return 0;
         }
-        Date referenceTime = now;
+        Long referenceTime = now;
         if (!s.isRunning()) {
             referenceTime = s.getLastPause();
         }
-        return (referenceTime.getTime()-s.getStart().getTime())-s.getPausedauerInMillisec();
+        return (referenceTime - s.getStart()) - s.getPausedauerInMillisec();
     }
 
-    public int zeitpunktInSekunden(Date now) {
+    public int zeitpunktInSekunden(Long now) {
         return Math.toIntExact((calcSpieldauer(now) / 1000));
     }
 

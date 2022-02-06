@@ -10,7 +10,7 @@ public class Ereignis implements Comparable, Serializable {
 	private String id;
 	private EreignisTyp typ;
 	private int zeitpunktInSekunden;
-	private Date uhrzeit;
+	private Long timestamp;
 	private Spieler spieler;
 	private Team team;
 	private final List<Ereignis> folgeEreignisse = new LinkedList<>();
@@ -18,24 +18,24 @@ public class Ereignis implements Comparable, Serializable {
 	public Ereignis() {
 	}
 
-	public Ereignis(EreignisTyp typ, int zeitpunktInSekunden, Date uhrzeit) {
+	public Ereignis(EreignisTyp typ, int zeitpunktInSekunden, Long timestamp) {
 		this.typ = typ;
 		this.zeitpunktInSekunden = zeitpunktInSekunden;
-		this.uhrzeit = uhrzeit;
+		this.timestamp = timestamp;
 	}
 
 	public Ereignis(EreignisTyp typ, Ereignis ereignis) {
 		this.typ = typ;
 		this.id = ereignis.getId();
 		this.zeitpunktInSekunden = ereignis.zeitpunktInSekunden;
-		this.uhrzeit = ereignis.uhrzeit;
+		this.timestamp = ereignis.timestamp;
 		this.spieler = ereignis.spieler;
 		this.team = ereignis.team;
 		this.folgeEreignisse.addAll(ereignis.folgeEreignisse);
 	}
 
 	public Ereignis addFolgeEreignis(EreignisTyp ereignisTyp) {
-		Ereignis folgeEreignis = new Ereignis(ereignisTyp, zeitpunktInSekunden, uhrzeit);
+		Ereignis folgeEreignis = new Ereignis(ereignisTyp, zeitpunktInSekunden, timestamp);
 		folgeEreignis.team = team;
 		addFolgeEreignis(folgeEreignis);
 		return folgeEreignis;
@@ -111,12 +111,12 @@ public class Ereignis implements Comparable, Serializable {
 		this.zeitpunktInSekunden = zeitpunktInSekunden;
 	}
 
-	public Date getUhrzeit() {
-		return uhrzeit;
+	public Long getTimestamp() {
+		return timestamp;
 	}
 
-	public void setUhrzeit(Date uhrzeit) {
-		this.uhrzeit = uhrzeit;
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public Spieler getSpieler() {

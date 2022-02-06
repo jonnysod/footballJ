@@ -5,8 +5,8 @@ import jonnysod.football.control.TurnierOptionen;
 import jonnysod.football.model.*;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -27,11 +27,11 @@ public class TabelleTest {
 
         for (Spiel spiel : spieltag) {
             if (new SpielInfo(spiel).teilnehmer(team1)) {
-                Ereignis tor = new Ereignis(EreignisTyp.TOR, 0, new Date());
+                Ereignis tor = new Ereignis(EreignisTyp.TOR, 0, Instant.now().toEpochMilli());
                 tor.setTeam(team1);
                 spiel.getEreignisList().add(tor);
             } else {
-                Ereignis tor = new Ereignis(EreignisTyp.TOR, 0, new Date());
+                Ereignis tor = new Ereignis(EreignisTyp.TOR, 0, Instant.now().toEpochMilli());
                 tor.setTeam(team2);
                 spiel.getEreignisList().add(tor);
             }

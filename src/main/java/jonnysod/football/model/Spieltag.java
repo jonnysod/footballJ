@@ -1,20 +1,24 @@
 package jonnysod.football.model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.util.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class Spieltag implements Serializable, Iterable<Spiel> {
 
     private List<Spiel> spiels = new ArrayList<>();
 	private String id;
 	private String name;
-	private Date start;
+	private Long start;
 
 	public Spieltag() {
 	}
 
-	public Spieltag(Date start) {
+	public Spieltag(Long start) {
 		super();
 		this.start = start;
 		this.name = getFormattedErstellungsDatum();
@@ -60,18 +64,20 @@ public class Spieltag implements Serializable, Iterable<Spiel> {
 		this.name = name;
 	}
 
-	public Date getStart() {
+	public Long getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
+	public void setStart(Long start) {
 		this.start = start;
 	}
 
 	private String getFormattedErstellungsDatum() {
 		if (start != null) {
-			DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-			return df.format(start);
+			return Instant.ofEpochMilli(start)
+					.atZone(ZoneId.of("Europe/Berlin"))
+					.toLocalDate()
+					.toString();
 		} else {
 			return "Kein Datum";
 		}

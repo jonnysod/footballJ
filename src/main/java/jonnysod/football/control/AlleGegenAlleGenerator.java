@@ -1,23 +1,23 @@
 package jonnysod.football.control;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import jonnysod.football.model.Spiel;
 import jonnysod.football.model.Spieltag;
 import jonnysod.football.model.Team;
 import jonnysod.football.statistic.SpielInfo;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class AlleGegenAlleGenerator implements SpieltagGenerator {
 
 	@Override
 	public Spieltag generateSpieltag(List<Team> teams,
 			TurnierOptionen optionen) {
-		Date start = new Date();
-		Spieltag spieltag = new Spieltag(start);
+		Instant start = Instant.now();
+		Spieltag spieltag = new Spieltag(start.toEpochMilli());
 		List<Spiel> spieles = new ArrayList<Spiel>();
 		for (Team heim: teams) {
 			for (Team auswaerts: teams) {

@@ -11,9 +11,9 @@ public class Spiel implements Serializable {
 	private SpielTeam auswaerts;
 	private int spiellaengeInSekunden;
 	private Long pausedauerInMillisec = 0L;
-	private Date start = null;
-	private Date ende = null;
-    private Date lastPause = null;
+	private Long start = null;
+	private Long ende = null;
+    private Long lastPause = null;
 
 	public Spiel() {
 	}
@@ -43,18 +43,18 @@ public class Spiel implements Serializable {
 		return ereignisList;
 	}
 
-	public void pause(Date now) {
+	public void pause(Long now) {
 		lastPause = now;
 	}
 
-	public void ende(Date now) {
+	public void ende(Long now) {
 	    if (isRunning()) {
 			pause(now);
 		}
 		ende = lastPause;
 	}
 
-	public void resume(Date now) {
+	public void resume(Long now) {
 		if (start == null) {
 			start = now;
 		}
@@ -62,7 +62,7 @@ public class Spiel implements Serializable {
 		long oldPauseDur = pausedauerInMillisec;
 		long lastPauseDur = 0;
 		if (lastPause != null) {
-			lastPauseDur = now.getTime() - lastPause.getTime();
+			lastPauseDur = now - lastPause;
 		}
 		pausedauerInMillisec = oldPauseDur + lastPauseDur;
 		lastPause = null;
@@ -148,27 +148,27 @@ public class Spiel implements Serializable {
 		this.pausedauerInMillisec = pausedauerInMillisec;
 	}
 
-	public Date getStart() {
+	public Long getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
+	public void setStart(Long start) {
 		this.start = start;
 	}
 
-	public Date getEnd() {
+	public Long getEnd() {
 		return ende;
 	}
 
-	public void setEnd(Date ende) {
+	public void setEnd(Long ende) {
 		this.ende = ende;
 	}
 
-	public Date getLastPause() {
+	public Long getLastPause() {
 		return lastPause;
 	}
 
-	public void setLastPause(Date lastPause) {
+	public void setLastPause(Long lastPause) {
 		this.lastPause = lastPause;
 	}
 
