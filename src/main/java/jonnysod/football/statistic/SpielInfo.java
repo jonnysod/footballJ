@@ -153,19 +153,19 @@ public class SpielInfo {
         }
     }
 
-    public long calcSpieldauer(Long now) {
+    public long calcSpieldauer(Long ts) {
         if (s.getStart()==null) {
             return 0;
         }
-        Long referenceTime = now;
+        Long referenceTime = ts;
         if (!s.isRunning()) {
             referenceTime = s.getLastPause();
         }
         return (referenceTime - s.getStart()) - s.getPausedauerInMillisec();
     }
 
-    public int zeitpunktInSekunden(Long now) {
-        return Math.toIntExact((calcSpieldauer(now) / 1000));
+    public int zeitpunktInSekunden(Long ts) {
+        return Math.toIntExact((calcSpieldauer(ts) / 1000));
     }
 
     public boolean isEnded() {
