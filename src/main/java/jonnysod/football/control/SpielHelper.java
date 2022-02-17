@@ -1,9 +1,6 @@
 package jonnysod.football.control;
 
-import jonnysod.football.model.Spiel;
-import jonnysod.football.model.SpielSpieler;
-import jonnysod.football.model.SpielTeam;
-import jonnysod.football.model.Spieler;
+import jonnysod.football.model.*;
 import jonnysod.football.statistic.SpielInfo;
 
 import java.util.List;
@@ -16,15 +13,23 @@ public class SpielHelper {
         this.spiel = spiel;
     }
 
-    public boolean addToHeim(Spieler spieler, Long now) {
-        return addTo(spiel.getHeim(), spieler, now);
+    /**
+     * Add a `spieler` to `SpielTeam` from heim `Team`. Spieler should only be added, if it is currently not in the
+     * `SpielTeam`. It is added to `zeitpunktInSekunden` given by `ts`.
+     *
+     * @param spieler
+     * @param ts
+     * @return Boolean indicating if the spieler was successfully added
+     */
+    public boolean addToHeim(Spieler spieler, Long ts) {
+        return addTo(spiel.getHeim(), spieler, ts);
     }
 
-    public boolean addToAuswaerts(Spieler spieler, Long now) {
-        return addTo(spiel.getAuswaerts(), spieler, now);
+    public boolean addToAuswaerts(Spieler spieler, Long ts) {
+        return addTo(spiel.getAuswaerts(), spieler, ts);
     }
 
-    private boolean addTo(SpielTeam team, Spieler spieler, Long now) {
+    private boolean addTo(SpielTeam team, Spieler spieler, Long ts) {
         SpielInfo info = new SpielInfo(spiel);
         if (!info.isBeendet()) {
             SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
@@ -32,49 +37,104 @@ public class SpielHelper {
                 spielSpieler = new SpielSpieler(spieler);
                 team.getSpielerList().add(spielSpieler);
             }
-            if (info.isStarted() && !spiel.getStart().equals(now)) {
-                int zeitpunktInSekunden = info.zeitpunktInSekunden(now);
-                List<Integer> austrittsZeitpunktList = spielSpieler.getAustrittsZeitpunktInSekunden();
-                int lastIndex = austrittsZeitpunktList.size() - 1;
-                if (!austrittsZeitpunktList.isEmpty() && zeitpunktInSekunden == austrittsZeitpunktList.get(lastIndex)) {
-                    austrittsZeitpunktList.remove(lastIndex);
+            int zeitpunktInSekunden = info.zeitpunktInSekunden(ts);
+            List<Integer> eintrittList = spielSpieler.getEintrittsZeitpunktInSekunden();
+            boolean zeitpunktAfterLastEintritt = eintrittList.isEmpty()
+                    || zeitpunktInSekunden > eintrittList.get(eintrittList.size() - 1);
+            if (!isInTeam(spielSpieler, zeitpunktInSekunden) && zeitpunktAfterLastEintritt) {
+                List<Integer> austrittList = spielSpieler.getAustrittsZeitpunktInSekunden();
+                int lastAustrittIndex = austrittList.size() - 1;
+                if (!austrittList.isEmpty() && zeitpunktInSekunden <= austrittList.get(lastAustrittIndex)) {
+                    austrittList.remove(lastAustrittIndex);
                 } else {
                     // By the way, this is the normal case but because of java couldn't put it in front
-                    spielSpieler.getEintrittsZeitpunktInSekunden().add(zeitpunktInSekunden);
+                    eintrittList.add(zeitpunktInSekunden);
                 }
+                return true;
+            } else {
+                return false;
             }
-            return true;
         }
         return false;
     }
 
-    public boolean removeFromHeim(Spieler spieler, Long now) {
-        return removeFrom(spiel.getHeim(), spieler, now);
+    public boolean removeFromHeim(Spieler spieler, Long ts) {
+        return removeFrom(spiel.getHeim(), spieler, ts);
     }
 
-    public boolean removeFromAuswaerts(Spieler spieler, Long now) {
-        return removeFrom(spiel.getAuswaerts(), spieler, now);
+    public boolean removeFromAuswaerts(Spieler spieler, Long ts) {
+        return removeFrom(spiel.getAuswaerts(), spieler, ts);
     }
 
-    private boolean removeFrom(SpielTeam team, Spieler spieler, Long now) {
+    private boolean removeFrom(SpielTeam team, Spieler spieler, Long ts) {
         SpielInfo info = new SpielInfo(spiel);
         SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
         if (!info.isBeendet()) {
             if (info.isStarted()) {
-                int zeitpunktInSekunden = info.zeitpunktInSekunden(now);
-                List<Integer> eintrittsZeitpunktList = spielSpieler.getEintrittsZeitpunktInSekunden();
-                int lastIndex = eintrittsZeitpunktList.size() - 1;
-                if (!eintrittsZeitpunktList.isEmpty() && zeitpunktInSekunden == eintrittsZeitpunktList.get(lastIndex)) {
-                    eintrittsZeitpunktList.remove(lastIndex);
-                } else {
-                    // Again the normal case but I wasn't able to write it at top of if-else
-                    spielSpieler.getAustrittsZeitpunktInSekunden().add(info.zeitpunktInSekunden(now));
+                int zeitpunktInSekunden = info.zeitpunktInSekunden(ts);
+                List<Integer> austrittList = spielSpieler.getAustrittsZeitpunktInSekunden();
+                boolean zeitpunktAfterLastAustritt = austrittList.isEmpty()
+                        || zeitpunktInSekunden > austrittList.get(austrittList.size() - 1);
+                List<Integer> eintrittList = spielSpieler.getEintrittsZeitpunktInSekunden();
+                int lastEintrittIndex = eintrittList.size() - 1;
+                if (zeitpunktAfterLastAustritt) {
+                    if (!eintrittList.isEmpty() && zeitpunktInSekunden <= eintrittList.get(lastEintrittIndex)) {
+                        eintrittList.remove(lastEintrittIndex);
+                        if (eintrittList.isEmpty()) {
+                            team.getSpielerList().remove(spielSpieler);
+                        }
+                        return true;
+                    } else if (isInTeam(spielSpieler, zeitpunktInSekunden)) {
+                        // Again the normal case but I wasn't able to write it at top of if-else
+                        return spielSpieler.getAustrittsZeitpunktInSekunden().add(zeitpunktInSekunden);
+                    }
                 }
-                return true;
             } else {
                 return team.getSpielerList().remove(spielSpieler);
             }
         }
         return false;
+    }
+
+    public Team findCurrentHeimTeam(Long now) {
+        return findCurrentTeam(spiel.getHeim(), now);
+    }
+
+    public Team findCurrentAuswaertsTeam(Long now) {
+        return findCurrentTeam(spiel.getAuswaerts(), now);
+    }
+
+    private Team findCurrentTeam(SpielTeam spielTeam, Long currentTs) {
+        SpielInfo info = new SpielInfo(spiel);
+        int zeitpunktInSekunden = info.zeitpunktInSekunden(currentTs);
+        Team team = new Team();
+        for (SpielSpieler spielSpieler: spielTeam.getSpielerList()) {
+            if (isInTeam(spielSpieler, zeitpunktInSekunden)) {
+                team.getSpieler().add(spielSpieler.getSpieler());
+            }
+        }
+        return team;
+    }
+
+    private boolean isInTeam(SpielSpieler spieler, int zeitpunktInSekunden) {
+        List<Integer> eintrittsZeitpunktList = spieler.getEintrittsZeitpunktInSekunden();
+        List<Integer> austrittsZeitpunktList = spieler.getAustrittsZeitpunktInSekunden();
+        // We expect the spieler to not be in the team
+        boolean isInTeam = false;
+        // unless we find eintritt after `now` without and austritt before `now`
+        for (int i = 0; i < eintrittsZeitpunktList.size(); i++) {
+            int eintritt = eintrittsZeitpunktList.get(i);
+            if (i < austrittsZeitpunktList.size()) {
+                int austritt = austrittsZeitpunktList.get(i);
+                isInTeam = ((zeitpunktInSekunden >= eintritt) && (zeitpunktInSekunden < austritt));
+            } else {
+                isInTeam = (zeitpunktInSekunden >= eintritt);
+            }
+            // If we found a time slot for which the spieler is in team we are done.
+            if (isInTeam) {
+                break;
+            }
+        }
+        return isInTeam;
     }
 }
