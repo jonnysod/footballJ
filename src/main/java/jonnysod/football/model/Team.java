@@ -7,20 +7,18 @@ public class Team implements Serializable {
 
 	private String id;
 	private String name;
-	private List<Spieler> spielerList;
+	private List<Spieler> spielerList = new ArrayList<>();
 
 	public Team() {
 	}
 
 	public Team(String name) {
 		this.name = name;
-		this.spielerList = new ArrayList<>();
 	}
 
 	public Team(String id, String name) {
 		this.id = id;
 		this.name = name;
-		this.spielerList = new ArrayList<>();
 	}
 
 	@Override
