@@ -96,18 +96,28 @@ public class SpielHelper {
         return false;
     }
 
-    public Team findCurrentHeimTeam(Long now) {
-        return findCurrentTeam(spiel.getHeim(), now);
-    }
-
-    public Team findCurrentAuswaertsTeam(Long now) {
-        return findCurrentTeam(spiel.getAuswaerts(), now);
-    }
-
-    private Team findCurrentTeam(SpielTeam spielTeam, Long currentTs) {
+    public Team findCurrentHeimTeam(Long currentTs) {
         SpielInfo info = new SpielInfo(spiel);
         int zeitpunktInSekunden = info.zeitpunktInSekunden(currentTs);
-        Team team = new Team();
+        return findCurrentHeimTeam(zeitpunktInSekunden);
+    }
+
+    public Team findCurrentHeimTeam(Integer zeitpunktInSekunden) {
+        return findCurrentTeam(spiel.getHeim(), zeitpunktInSekunden);
+    }
+
+    public Team findCurrentAuswaertsTeam(Long currentTs) {
+        SpielInfo info = new SpielInfo(spiel);
+        int zeitpunktInSekunden = info.zeitpunktInSekunden(currentTs);
+        return findCurrentAuswaertsTeam(zeitpunktInSekunden);
+    }
+
+    public Team findCurrentAuswaertsTeam(Integer zeitpunktInSekunden) {
+        return findCurrentTeam(spiel.getAuswaerts(), zeitpunktInSekunden);
+    }
+
+    public static Team findCurrentTeam(SpielTeam spielTeam, Integer zeitpunktInSekunden) {
+        Team team = new Team(spielTeam.getId(), spielTeam.getName());
         for (SpielSpieler spielSpieler: spielTeam.getSpielerList()) {
             if (isInTeam(spielSpieler, zeitpunktInSekunden)) {
                 team.getSpieler().add(spielSpieler.getSpieler());
@@ -116,7 +126,7 @@ public class SpielHelper {
         return team;
     }
 
-    private boolean isInTeam(SpielSpieler spieler, int zeitpunktInSekunden) {
+    private static boolean isInTeam(SpielSpieler spieler, int zeitpunktInSekunden) {
         List<Integer> eintrittsZeitpunktList = spieler.getEintrittsZeitpunktInSekunden();
         List<Integer> austrittsZeitpunktList = spieler.getAustrittsZeitpunktInSekunden();
         // We expect the spieler to not be in the team

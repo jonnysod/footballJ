@@ -210,5 +210,20 @@ class SpielHelperTest {
 
     @Test
     void findCurrentAuswaertsTeam() {
+        Spieler spieler2 = new Spieler("Spieler 2");
+        startedSpielHelper.addToAuswaerts(spieler2, start.toEpochMilli());
+
+        Spieler spieler3 = new Spieler("Spieler 3");
+        int seconds = 5;
+        Instant after5Seconds = start.plusSeconds(seconds);
+        startedSpielHelper.addToAuswaerts(spieler3, after5Seconds.toEpochMilli());
+
+        Team auswaertsAt3Sec = startedSpielHelper.findCurrentAuswaertsTeam(start.plusSeconds(3).toEpochMilli());
+        assertTrue(auswaertsAt3Sec.isMember(spieler2));
+        assertFalse(auswaertsAt3Sec.isMember(spieler3));
+
+        Team auswaertsAt6Sec = startedSpielHelper.findCurrentAuswaertsTeam(start.plusSeconds(6).toEpochMilli());
+        assertTrue(auswaertsAt6Sec.isMember(spieler2));
+        assertTrue(auswaertsAt6Sec.isMember(spieler3));
     }
 }
