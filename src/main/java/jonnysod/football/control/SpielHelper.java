@@ -33,11 +33,11 @@ public class SpielHelper {
         SpielInfo info = new SpielInfo(spiel);
         if (!info.isBeendet()) {
             SpielSpieler spielSpieler = info.findSpielSpieler(team, spieler);
+            int zeitpunktInSekunden = info.zeitpunktInSekunden(ts);
             if (spielSpieler == null) {
-                spielSpieler = new SpielSpieler(spieler);
+                spielSpieler = new SpielSpieler(spieler, zeitpunktInSekunden);
                 team.getSpielerList().add(spielSpieler);
             }
-            int zeitpunktInSekunden = info.zeitpunktInSekunden(ts);
             List<Integer> eintrittList = spielSpieler.getEintrittsZeitpunktInSekunden();
             boolean zeitpunktAfterLastEintritt = eintrittList.isEmpty()
                     || zeitpunktInSekunden > eintrittList.get(eintrittList.size() - 1);

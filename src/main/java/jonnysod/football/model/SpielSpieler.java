@@ -11,9 +11,13 @@ public class SpielSpieler implements Serializable {
 	private List<Integer> austrittsZeitpunktInSekunden = new ArrayList<>();
 
 	public SpielSpieler(Spieler spieler) {
+		this(spieler, 0);
+	}
+
+	public SpielSpieler(Spieler spieler, int eintrittInSekunden) {
 		super();
 		this.spieler = spieler;
-		eintrittsZeitpunktInSekunden.add(0);
+		this.eintrittsZeitpunktInSekunden.add(eintrittInSekunden);
 	}
 
 	public Spieler getSpieler() {
