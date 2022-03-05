@@ -13,12 +13,7 @@ public class SpielSpieler implements Serializable {
 	public SpielSpieler(Spieler spieler) {
 		super();
 		this.spieler = spieler;
-	}
-
-	public SpielSpieler(Spieler spieler, List<Integer> eintrittsZeitpunktInSekunden, List<Integer> austrittsZeitpunktInSekunden) {
-		this.spieler = spieler;
-		this.eintrittsZeitpunktInSekunden = eintrittsZeitpunktInSekunden;
-		this.austrittsZeitpunktInSekunden = austrittsZeitpunktInSekunden;
+		eintrittsZeitpunktInSekunden.add(0);
 	}
 
 	public Spieler getSpieler() {
