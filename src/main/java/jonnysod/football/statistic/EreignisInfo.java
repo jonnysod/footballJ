@@ -30,13 +30,13 @@ public class EreignisInfo {
     public Team findMoeglicheSchuetzen(SpielTeam spielTeam) {
         Ereignis vorlage = e.getFolgeEreignis(EreignisTyp.VORLAGE);
         Spieler vorlagenSpieler = vorlage == null? null : vorlage.getSpieler();
-        return getOtherSpieler(vorlage.getSpieler(), spielTeam, "Schuetzen");
+        return getOtherSpieler(vorlagenSpieler, spielTeam, "Schuetzen");
     }
 
     private Team getOtherSpieler(Spieler spieler, SpielTeam spielTeam, String teamName) {
         Team otherSpieler = new Team(teamName);
         for (SpielSpieler s  : spielTeam.getSpielerList()) {
-            if (!s.equals(spieler)) {
+            if (!s.getSpieler().equals(spieler)) {
                 otherSpieler.getSpieler().add(s.getSpieler());
             }
         }
